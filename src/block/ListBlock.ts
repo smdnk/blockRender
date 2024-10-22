@@ -13,17 +13,15 @@ export class ListBlock implements BlockView{
     childBlockEle.classList.add('list-block-content')
 
     for (let blockChild of block.childBlockList) {
-      let blockOp = blockRender.blockOption.find(e=>e.blockName === blockChild.blockType);
-      if (blockOp === undefined) continue
+      // let blockOp = blockRender.blockOption.find(e=>e.blockName === blockChild.blockType);
+      // if (blockOp === undefined) continue
 
-
-      const htmlDivElement = document.createElement('div');
-      htmlDivElement.classList.add('block-main')
-      htmlDivElement.id='#block_'+block.blockId
-
-
-      blockOp.blockView.renderView(blockChild,htmlDivElement,blockRender)
-      childBlockEle.appendChild(htmlDivElement)
+      // const htmlDivElement = document.createElement('div');
+      // htmlDivElement.classList.add('block-main')
+      // htmlDivElement.id='#block_'+block.blockId
+      //
+      // blockOp.blockView.renderView(blockChild,htmlDivElement,blockRender)
+      childBlockEle.appendChild(blockRender.blockEleRender(blockChild))
     }
     htmlDivElement.appendChild(childBlockEle)
 

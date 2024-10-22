@@ -5,14 +5,14 @@ export class ListBlock {
         htmlDivElement.appendChild(this.createListTitleEle(block, childBlockEle));
         childBlockEle.classList.add('list-block-content');
         for (let blockChild of block.childBlockList) {
-            let blockOp = blockRender.blockOption.find(e => e.blockName === blockChild.blockType);
-            if (blockOp === undefined)
-                continue;
-            const htmlDivElement = document.createElement('div');
-            htmlDivElement.classList.add('block-main');
-            htmlDivElement.id = '#block_' + block.blockId;
-            blockOp.blockView.renderView(blockChild, htmlDivElement, blockRender);
-            childBlockEle.appendChild(htmlDivElement);
+            // let blockOp = blockRender.blockOption.find(e=>e.blockName === blockChild.blockType);
+            // if (blockOp === undefined) continue
+            // const htmlDivElement = document.createElement('div');
+            // htmlDivElement.classList.add('block-main')
+            // htmlDivElement.id='#block_'+block.blockId
+            //
+            // blockOp.blockView.renderView(blockChild,htmlDivElement,blockRender)
+            childBlockEle.appendChild(blockRender.blockEleRender(blockChild));
         }
         htmlDivElement.appendChild(childBlockEle);
         return htmlDivElement;

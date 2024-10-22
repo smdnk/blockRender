@@ -33,7 +33,7 @@ export class BlockRender{
         this.init()
     }
 
-    private blockEleRender(block:Block):HTMLDivElement {
+    public blockEleRender(block:Block):HTMLDivElement {
         // 根据块类型获取块的渲染器
         let blockOption = this.getBlockOption(block);
         if (blockOption === undefined) return document.createElement('div')

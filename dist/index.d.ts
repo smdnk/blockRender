@@ -20,7 +20,7 @@ export declare class BlockRender {
     menu?: HTMLDivElement;
     maxSort?: number;
     constructor(eleId: string, userId: string, currentBlockId: string, blockList: Array<Block>, blockOption: Array<BlockOption>);
-    private blockEleRender;
+    blockEleRender(block: Block): HTMLDivElement;
     init(): void;
     private initEle;
     private initMenu;
