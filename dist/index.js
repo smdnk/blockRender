@@ -1,4 +1,9 @@
 import { BlockType, LanguageType } from "./types";
+export { LineBlock } from './block/LineBlock';
+export { ListBlock } from './block/ListBlock';
+export { CodeBlock } from './block/CodeBlock';
+export { PageBlock } from './block/PageBlock';
+export { FileBlock } from './block/FileBlock';
 export class BlockRender {
     eleId;
     userId;

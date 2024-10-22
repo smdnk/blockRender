@@ -1,4 +1,9 @@
 import { Block, BlockOption } from "./types";
+export { LineBlock } from './block/LineBlock';
+export { ListBlock } from './block/ListBlock';
+export { CodeBlock } from './block/CodeBlock';
+export { PageBlock } from './block/PageBlock';
+export { FileBlock } from './block/FileBlock';
 export interface BlockView {
     renderView(block: Block, htmlDivElement: HTMLDivElement, blockRender: BlockRender): void;
 }
