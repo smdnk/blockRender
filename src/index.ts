@@ -6,6 +6,8 @@ export { CodeBlock } from './block/CodeBlock';
 export { PageBlock } from './block/PageBlock';
 export { FileBlock } from './block/FileBlock';
 
+export * from './types';   // 导出类型
+
 export interface BlockView{
     renderView(block:Block,htmlDivElement:HTMLDivElement,blockRender:BlockRender):void
 }

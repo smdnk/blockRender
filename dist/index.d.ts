@@ -5,6 +5,7 @@ export { ListBlock } from './block/ListBlock';
 export { CodeBlock } from './block/CodeBlock';
 export { PageBlock } from './block/PageBlock';
 export { FileBlock } from './block/FileBlock';
+export * from './types';
 export interface BlockView {
     renderView(block: Block, htmlDivElement: HTMLDivElement, blockRender: BlockRender): void;
 }
