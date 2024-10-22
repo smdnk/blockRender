@@ -1,4 +1,5 @@
 import { BlockType, LanguageType } from "./types";
+import './index.css'; // 自动导入样式
 export { LineBlock } from './block/LineBlock';
 export { ListBlock } from './block/ListBlock';
 export { CodeBlock } from './block/CodeBlock';

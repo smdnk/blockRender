@@ -1,4 +1,5 @@
 import { Block, BlockOption } from "./types";
+import './index.css';
 export { LineBlock } from './block/LineBlock';
 export { ListBlock } from './block/ListBlock';
 export { CodeBlock } from './block/CodeBlock';
