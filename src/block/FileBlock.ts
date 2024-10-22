@@ -1,16 +1,14 @@
 import {BlockRender, BlockView} from "../index";
 import {Block} from "../types";
 
-export class FileBlock extends BlockView{
+export class FileBlock implements BlockView{
 
-  openFileManager:Function
+  openFileManager:(block:Block)=>void
 
-  constructor(openFileManager:Function) {
-    super();
+  constructor(openFileManager:(block:Block)=>void) {
     this.openFileManager = openFileManager
   }
   renderView(block: Block,htmlDivElement:HTMLDivElement,blockRender:BlockRender) {
-    this.blockRender = blockRender
 
     htmlDivElement.innerHTML = block.blockData.file.fileName.content
     htmlDivElement.classList.add('file-block-content')

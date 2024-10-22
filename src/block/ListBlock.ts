@@ -1,11 +1,10 @@
 import {BlockRender, BlockView} from "../index";
 import {Block} from "../types";
 
-export class ListBlock extends BlockView{
+export class ListBlock implements BlockView{
 
 
   renderView(block: Block,htmlDivElement:HTMLDivElement,blockRender:BlockRender){
-    this.blockRender = blockRender
 
     // 先添加一个折叠列表标题
     let childBlockEle = document.createElement('div')
@@ -23,8 +22,8 @@ export class ListBlock extends BlockView{
       htmlDivElement.id='#block_'+block.blockId
 
 
-      let htmlDivElementChild = blockOp.blockView.renderView(blockChild,htmlDivElement,blockRender)
-      childBlockEle.appendChild(htmlDivElementChild)
+      blockOp.blockView.renderView(blockChild,htmlDivElement,blockRender)
+      childBlockEle.appendChild(htmlDivElement)
     }
     htmlDivElement.appendChild(childBlockEle)
 

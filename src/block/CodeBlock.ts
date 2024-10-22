@@ -2,9 +2,8 @@ import {BlockRender, BlockView} from "../index";
 import {Block} from "../types";
 import {updateContent} from "../utils";
 
-export class CodeBlock extends BlockView {
+export class CodeBlock implements BlockView {
   renderView(block: Block,htmlDivElement:HTMLDivElement,blockRender:BlockRender) {
-    this.blockRender = blockRender
 
     htmlDivElement.innerHTML = block.blockData.content
     // 添加可编辑属性

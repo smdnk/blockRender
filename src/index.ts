@@ -1,10 +1,7 @@
 import {Block, BlockData, BlockOption, BlockType, LanguageType} from "./types";
 
-export class BlockView{
-    blockRender:BlockRender
-    renderView(block:Block,htmlDivElement:HTMLDivElement,blockRender:BlockRender){
-        console.log('需要从写')
-    }
+export interface BlockView{
+    renderView(block:Block,htmlDivElement:HTMLDivElement,blockRender:BlockRender):void
 }
 
 export class BlockRender{
@@ -16,21 +13,22 @@ export class BlockRender{
     positionX?:number
     positionY?:number
     menu?:HTMLDivElement
-    maxSort:number
+    maxSort?:number
 
-    constructor(eleId:string,userId:string,blockList:Array<Block>,blockOption:Array<BlockOption>) {
+    constructor(eleId:string,userId:string,currentBlockId: string,blockList:Array<Block>,blockOption:Array<BlockOption>) {
         this.eleId = eleId
         this.userId = userId
         this.blockList = blockList
         this.blockOption = blockOption
+        this.currentBlockId = currentBlockId
 
         this.init()
     }
 
-    private blockEleRender(block:Block):HTMLDivElement{
+    private blockEleRender(block:Block):HTMLDivElement {
         // 根据块类型获取块的渲染器
         let blockOption = this.getBlockOption(block);
-        if (blockOption === undefined) return
+        if (blockOption === undefined) return document.createElement('div')
         let blockView = blockOption.blockView;
 
         // 新建块的根元素
@@ -126,7 +124,7 @@ export class BlockRender{
         return  this.blockOption.map(e=>e.blockName)
     }
 
-    private getBlockOption(block:Block){
+    private getBlockOption(block:Block):BlockOption | undefined{
         return this.blockOption.find(e=>e.blockName === block.blockType);
     }
 
@@ -136,7 +134,8 @@ export class BlockRender{
         return ele
     }
 
-    private createBlock(): Block{
+    public createBlock(): Block{
+        if (this.maxSort == undefined) this.maxSort = 0
         this.maxSort+=1
         return {
             parentBlockId: "",
@@ -170,7 +169,7 @@ export class BlockRender{
      * @param newBlock
      * @private
      */
-    private insertBlock (blockList: Array<Block>, currentBlockId: string, newBlock: Block) {
+    public insertBlock (blockList: Array<Block>, currentBlockId: string, newBlock: Block) {
         for (let i = 0; i < blockList.length; i++) {
             const blockF = blockList[i];
 
@@ -201,7 +200,7 @@ export class BlockRender{
      * 修改块数据，并重新渲染
      * @private
      */
-    private changeBlock(blockList: Array<Block>, currentBlockId: string, newBlock: Block){
+    public changeBlock(blockList: Array<Block>, currentBlockId: string, newBlock: Block){
 
         for (let i = 0; i < blockList.length; i++) {
             const blockF = blockList[i];

@@ -1,36 +1,40 @@
 import {BlockRender, BlockView} from "../index";
-import {Block, BlockOption, BlockType} from "../types";
+import {Block,  BlockType} from "../types";
 import {updateContent} from "../utils";
-import {writeBytesToFile} from "@/utils/fileUtils";
 
-export class LineBlock extends BlockView {
+export class LineBlock implements BlockView {
+  writeBytesToFile: (arrData: number[], fileName:string) => void;
 
+  constructor(writeBytesToFile:(arrData: number[], fileName:string)=>void) {
+    this.writeBytesToFile = writeBytesToFile;
+  }
   renderView(block: Block,htmlDivElement:HTMLDivElement,blockRender:BlockRender) {
-    this.blockRender = blockRender
 
     htmlDivElement.innerHTML = block.blockData.content
     // 添加可编辑属性
     htmlDivElement.setAttribute('contenteditable', 'true');  // 设置 title 属性
     htmlDivElement.classList.add('editable','placeholder-div')
 
-    this.addLineBlockEvent(htmlDivElement,block)
+    this.addLineBlockEvent(htmlDivElement,block,blockRender)
 
     return htmlDivElement;
   }
 
-  private addLineBlockEvent(LineDivEle:HTMLDivElement,block:Block) {
+  private addLineBlockEvent(LineDivEle:HTMLDivElement,block:Block,blockRender:BlockRender) {
     // 监听 input 事件
     LineDivEle.addEventListener('input', (event: Event) => {
       if (LineDivEle.innerHTML === '/' || LineDivEle.innerHTML === '') {
-        debugger
         block.blockData.content = LineDivEle.innerHTML
-        if (this.blockRender.menu) {
-          this.blockRender.menu.hidden = LineDivEle.innerHTML !== '/'
+        if (blockRender.menu) {
+          blockRender.menu.hidden = LineDivEle.innerHTML !== '/'
           // 如果要显示菜单，则自动获取焦点 同时调整位置
-          if ( !this.blockRender.menu.hidden)  {
-            this.blockRender.menu.focus()
-            this.blockRender.menu.style.top = this.blockRender.positionY + 'px'
-            this.blockRender.menu.style.left = this.blockRender.positionX - 40 + 'px'
+          if ( blockRender.menu.hidden)  {
+            blockRender.menu.focus()
+
+            if (blockRender.positionY == undefined) blockRender.positionY = 0
+            if (blockRender.positionX == undefined) blockRender.positionX = 0
+            blockRender.menu.style.top = blockRender.positionY + 'px'
+            blockRender.menu.style.left = blockRender.positionX - 40 + 'px'
           }
         }
         return
@@ -100,16 +104,14 @@ export class LineBlock extends BlockView {
           filePath: '',
           fileImage: ''
         }
-        this.blockRender.changeBlock(this.blockRender.blockList,this.blockRender.currentBlockId,block)
+        blockRender.changeBlock(blockRender.blockList,blockRender.currentBlockId,block)
 
         if (arrayBuffer) {
           // 将 ArrayBuffer 转换为 Uint8Array (字节数组)
           const byteArray: Uint8Array = new Uint8Array(arrayBuffer);
           const numberArray = Array.from(byteArray);
 
-
-          await writeBytesToFile(numberArray, file.name)
-
+          this.writeBytesToFile(numberArray, file.name)
         }
       };
 

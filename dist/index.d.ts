@@ -1,4 +1,39 @@
-import './index.css';
-export declare class NoteApp {
-    addBlockClass(childBlockEle: HTMLDivElement): void;
+import { Block, BlockOption } from "./types";
+export interface BlockView {
+    renderView(block: Block, htmlDivElement: HTMLDivElement, blockRender: BlockRender): void;
+}
+export declare class BlockRender {
+    eleId: string;
+    userId: string;
+    blockList: Array<Block>;
+    blockOption: Array<BlockOption>;
+    currentBlockId: string;
+    positionX?: number;
+    positionY?: number;
+    menu?: HTMLDivElement;
+    maxSort?: number;
+    constructor(eleId: string, userId: string, currentBlockId: string, blockList: Array<Block>, blockOption: Array<BlockOption>);
+    private blockEleRender;
+    init(): void;
+    private initEle;
+    private initMenu;
+    private clickMenu;
+    private addNoteEvent;
+    private getBlockTypeList;
+    private getBlockOption;
+    private getBlockEle;
+    createBlock(): Block;
+    /**
+     * 在当前块下方插入新块，并且修改数据
+     * @param blockList
+     * @param currentBlockId
+     * @param newBlock
+     * @private
+     */
+    insertBlock(blockList: Array<Block>, currentBlockId: string, newBlock: Block): void;
+    /**
+     * 修改块数据，并重新渲染
+     * @private
+     */
+    changeBlock(blockList: Array<Block>, currentBlockId: string, newBlock: Block): void;
 }

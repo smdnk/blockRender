@@ -1,6 +1,66 @@
+@charset "UTF-8";
 .block-main {
   margin-left: 12px;
   padding: 2px 0;
+}
+
+.code-block-content {
+  padding: 10px;
+  background-color: #F5F5F5;
+}
+
+.file-block-content {
+  background-color: #F8E6E6;
+}
+
+.list-block-content {
+  margin-left: 6px;
+  border-left: solid 3px #F5F5F5;
+  padding-top: 8px;
+}
+
+.menu {
+  max-height: 30%;
+  min-height: 30px;
+  width: 80px;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.list-title {
+  display: flex;
+}
+
+.editable:focus {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+.placeholder-div {
+  position: relative;
+}
+
+.placeholder-div:focus::before {
+  content: "输入 / 选择";
+  color: #999;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  pointer-events: none;
+}
+
+.placeholder-div:empty::before {
+  display: block;
+}
+
+.placeholder-div:not(:empty)::before {
+  display: none;
 }
 
 /*# sourceMappingURL=index.css.map */
