@@ -1,0 +1,15 @@
+{
+  "name": "block-render",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "style": "dist/index.css",
+  "scripts": {
+    "build:ts": "tsc",
+    "build:scss": "sass styles/index.scss dist/index.css",
+    "build": "npm run build:ts && npm run build:scss"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "sass": "^1.32.0"
+  }
+}
