@@ -20,6 +20,9 @@ export class ListBlock implements BlockView{
     return htmlDivElement;
   }
 
+  addBlockEvent(block: Block,LineDivEle:HTMLDivElement,blockRender:BlockRender){
+
+  }
 
   private createListTitleEle(block:Block,childBlockEle:HTMLDivElement):HTMLDivElement{
     const titleDivEle = document.createElement('div');

@@ -10,6 +10,8 @@ export class ListBlock {
         htmlDivElement.appendChild(childBlockEle);
         return htmlDivElement;
     }
+    addBlockEvent(block, LineDivEle, blockRender) {
+    }
     createListTitleEle(block, childBlockEle) {
         const titleDivEle = document.createElement('div');
         titleDivEle.classList.add('list-title');

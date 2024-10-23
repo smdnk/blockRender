@@ -10,10 +10,10 @@ export class LineBlock {
         // 添加可编辑属性
         htmlDivElement.setAttribute('contenteditable', 'true'); // 设置 title 属性
         htmlDivElement.classList.add('editable', 'placeholder-div');
-        this.addLineBlockEvent(htmlDivElement, block, blockRender);
+        this.addBlockEvent(block, htmlDivElement, blockRender);
         return htmlDivElement;
     }
-    addLineBlockEvent(LineDivEle, block, blockRender) {
+    addBlockEvent(block, LineDivEle, blockRender) {
         // 监听 input 事件
         LineDivEle.addEventListener('input', (event) => {
             if (LineDivEle.innerHTML === '/' || LineDivEle.innerHTML === '') {
@@ -34,6 +34,36 @@ export class LineBlock {
                 return;
             }
             updateContent(LineDivEle.innerHTML, block);
+        });
+        // 监听删除键
+        LineDivEle.addEventListener('keyup', (event) => {
+            if ((event.key === 'Backspace' || event.key === 'Delete')) {
+                let attribute = LineDivEle.getAttribute('empty');
+                if (LineDivEle.innerHTML == '' && attribute === 'true') {
+                    blockRender.delBlock(blockRender.blockList, block.blockId);
+                }
+                if (LineDivEle.innerHTML == '') {
+                    LineDivEle.setAttribute('empty', 'true');
+                }
+                if (LineDivEle.innerHTML == '' && attribute === 'true') {
+                    LineDivEle.setAttribute('empty', 'false');
+                }
+            }
+        });
+        // 监听删除键
+        LineDivEle.addEventListener('keyup', (event) => {
+            if ((event.key === 'Backspace' || event.key === 'Delete')) {
+                let attribute = LineDivEle.getAttribute('empty');
+                if (LineDivEle.innerHTML == '' && attribute === 'true') {
+                    LineDivEle.remove();
+                }
+                if (LineDivEle.innerHTML == '') {
+                    LineDivEle.setAttribute('empty', 'true');
+                }
+                if (LineDivEle.innerHTML == '' && attribute === 'true') {
+                    LineDivEle.setAttribute('empty', 'false');
+                }
+            }
         });
         // 阻止默认事件
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {

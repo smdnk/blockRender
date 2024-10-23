@@ -3,4 +3,6 @@ export class PageBlock {
         htmlDivElement.innerHTML = block.blockData.content;
         return htmlDivElement;
     }
+    addBlockEvent(block, LineDivEle, blockRender) {
+    }
 }

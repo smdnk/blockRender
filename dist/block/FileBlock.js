@@ -6,10 +6,10 @@ export class FileBlock {
     renderView(block, htmlDivElement, blockRender) {
         htmlDivElement.innerHTML = block.blockData.file.fileName.content;
         htmlDivElement.classList.add('file-block-content');
-        this.addFileBlockEvent(htmlDivElement, block);
+        this.addBlockEvent(block, htmlDivElement, blockRender);
         return htmlDivElement;
     }
-    addFileBlockEvent(FileDivEle, block) {
+    addBlockEvent(block, FileDivEle, blockRender) {
         // 监听 input 事件
         FileDivEle.addEventListener('click', () => {
             this.openFileManager(block);

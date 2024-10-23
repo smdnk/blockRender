@@ -9,15 +9,34 @@ export class CodeBlock implements BlockView {
     // 添加可编辑属性
     htmlDivElement.setAttribute('contenteditable', 'true');  // 设置 title 属性
     htmlDivElement.classList.add('code-block-content','editable')
-    this.addCodeBlockEvent(htmlDivElement,block)
+    this.addBlockEvent(block,htmlDivElement,blockRender)
     return htmlDivElement;
   }
 
-  private addCodeBlockEvent(CodeDivEle:HTMLDivElement,block:Block){
+  addBlockEvent(block: Block,CodeDivEle:HTMLDivElement,blockRender:BlockRender){
 
     // 监听 input 事件
     CodeDivEle.addEventListener('input', (event: Event) => {
       updateContent(CodeDivEle.innerHTML,block)
+    });
+
+    // 监听删除键
+    CodeDivEle.addEventListener('keyup',(event)=>{
+
+      if ((event.key === 'Backspace' || event.key === 'Delete') ) {
+
+        let attribute = CodeDivEle.getAttribute('empty');
+        if (CodeDivEle.innerHTML == '' && attribute === 'true'){
+          blockRender.delBlock(blockRender.blockList,block.blockId)
+        }
+        if (CodeDivEle.innerHTML == ''){
+          CodeDivEle.setAttribute('empty','true')
+        }
+
+        if (CodeDivEle.innerHTML == '' && attribute === 'true'){
+          CodeDivEle.setAttribute('empty','false')
+        }
+      }
     });
   }
 

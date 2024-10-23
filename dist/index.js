@@ -149,6 +149,23 @@ export class BlockRender {
             blockTitle: ''
         };
     }
+    delBlock(blockList, blockId) {
+        for (let i = 0; i < blockList.length; i++) {
+            const blockF = blockList[i];
+            // 找到当前块
+            if (blockF.blockId === blockId) {
+                // 先移除数据
+                blockList.splice(i, 1);
+                // 再移除元素
+                this.getBlockEle(blockF.blockId).remove();
+                return;
+            }
+            // 如果当前块有子块，递归查找
+            if (blockF.childBlockList && blockF.childBlockList.length > 0) {
+                this.delBlock(blockF.childBlockList, blockId);
+            }
+        }
+    }
     /**
      * 在当前块下方插入新块，并且修改数据
      * @param blockList

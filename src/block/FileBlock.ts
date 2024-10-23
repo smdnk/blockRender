@@ -12,16 +12,17 @@ export class FileBlock implements BlockView{
 
     htmlDivElement.innerHTML = block.blockData.file.fileName.content
     htmlDivElement.classList.add('file-block-content')
-    this.addFileBlockEvent(htmlDivElement,block)
+    this.addBlockEvent(block,htmlDivElement,blockRender)
 
     return htmlDivElement;
   }
 
-  private addFileBlockEvent(FileDivEle:HTMLDivElement,block:Block){
+  addBlockEvent(block: Block,FileDivEle:HTMLDivElement,blockRender:BlockRender){
     // 监听 input 事件
     FileDivEle.addEventListener('click', ()=>{
       this.openFileManager(block)
     });
   }
+
 
 }

@@ -10,6 +10,7 @@ export * from './types';   // 导出类型
 
 export interface BlockView{
     renderView(block:Block,htmlDivElement:HTMLDivElement,blockRender:BlockRender):void
+    addBlockEvent(block:Block,htmlDivElement:HTMLDivElement,blockRender:BlockRender):void
 }
 
 export class BlockRender{
@@ -131,6 +132,7 @@ export class BlockRender{
             this.positionX = e.pageX
             this.positionY = e.pageY
         })
+
     }
 
 
@@ -143,7 +145,7 @@ export class BlockRender{
     }
 
     private getBlockEle(blockId:string):HTMLDivElement {
-        let ele = document.getElementById('#block_'+blockId) as HTMLDivElement;
+        let ele = document.getElementById('#block_'+blockId) as HTMLDivElement | null;
         if (ele === null) throw new Error('block ele is null')
         return ele
     }
@@ -173,6 +175,28 @@ export class BlockRender{
             childBlockList:[] as Array<Block>,
             blockTitle: ''
         }
+    }
+
+    public delBlock(blockList: Array<Block>,blockId:string){
+        for (let i = 0; i < blockList.length; i++) {
+            const blockF = blockList[i];
+
+            // 找到当前块
+            if (blockF.blockId === blockId) {
+
+                // 先移除数据
+                blockList.splice(i, 1);
+                // 再移除元素
+                this.getBlockEle(blockF.blockId).remove()
+
+                return;
+            }
+            // 如果当前块有子块，递归查找
+            if (blockF.childBlockList && blockF.childBlockList.length > 0) {
+                this.delBlock(blockF.childBlockList,blockId);
+            }
+        }
+
     }
 
 

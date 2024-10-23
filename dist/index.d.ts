@@ -8,6 +8,7 @@ export { FileBlock } from './block/FileBlock';
 export * from './types';
 export interface BlockView {
     renderView(block: Block, htmlDivElement: HTMLDivElement, blockRender: BlockRender): void;
+    addBlockEvent(block: Block, htmlDivElement: HTMLDivElement, blockRender: BlockRender): void;
 }
 export declare class BlockRender {
     eleId: string;
@@ -31,6 +32,7 @@ export declare class BlockRender {
     private getBlockOption;
     private getBlockEle;
     createBlock(): Block;
+    delBlock(blockList: Array<Block>, blockId: string): void;
     /**
      * 在当前块下方插入新块，并且修改数据
      * @param blockList

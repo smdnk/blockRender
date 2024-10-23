@@ -9,4 +9,8 @@ export class PageBlock implements BlockView{
 
     return htmlDivElement;
   }
+
+  addBlockEvent(block: Block,LineDivEle:HTMLDivElement,blockRender:BlockRender){
+
+  }
 }
