@@ -19,7 +19,8 @@ export declare class BlockRender {
     positionY?: number;
     menu?: HTMLDivElement;
     maxSort?: number;
-    constructor(eleId: string, userId: string, currentBlockId: string, blockList: Array<Block>, blockOption: Array<BlockOption>);
+    constructor(eleId: string, userId: string, currentBlockId: string, blockOption: Array<BlockOption>);
+    render(blockList: Array<Block>): void;
     blockEleRender(block: Block): HTMLDivElement;
     init(): void;
     private initEle;

@@ -16,12 +16,15 @@ export class BlockRender {
     positionY;
     menu;
     maxSort;
-    constructor(eleId, userId, currentBlockId, blockList, blockOption) {
+    constructor(eleId, userId, currentBlockId, blockOption) {
         this.eleId = eleId;
         this.userId = userId;
-        this.blockList = blockList;
+        this.blockList = [];
         this.blockOption = blockOption;
         this.currentBlockId = currentBlockId;
+    }
+    render(blockList) {
+        this.blockList = blockList;
         this.init();
     }
     blockEleRender(block) {
@@ -60,6 +63,8 @@ export class BlockRender {
         const noteEle = document.querySelector(this.eleId);
         if (noteEle === null)
             return;
+        // 先清理元素，这种清理方法不会触发元素上绑定的事件
+        noteEle.innerHTML = '';
         // 添加笔记页面事件
         this.addNoteEvent(noteEle);
         // 根据数据初始化块列表
