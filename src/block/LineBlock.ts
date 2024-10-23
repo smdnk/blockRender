@@ -49,15 +49,19 @@ export class LineBlock implements BlockView {
       if ((event.key === 'Backspace' || event.key === 'Delete') ) {
 
         let attribute = LineDivEle.getAttribute('empty');
-        if (LineDivEle.innerHTML == '' && attribute === 'true'){
+        if (attribute === 'true'){
           blockRender.delBlock(blockRender.blockList,block.blockId)
-        }
-        if (LineDivEle.innerHTML == ''){
-          LineDivEle.setAttribute('empty','true')
+          return
         }
 
-        if (LineDivEle.innerHTML == '' && attribute === 'true'){
+        if (LineDivEle.innerText == ''){
+          LineDivEle.setAttribute('empty','true')
+          return;
+        }
+
+        if (attribute === 'true' && LineDivEle.innerText != ''){
           LineDivEle.setAttribute('empty','false')
+          return;
         }
       }
     });

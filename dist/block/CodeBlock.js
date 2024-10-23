@@ -17,14 +17,17 @@ export class CodeBlock {
         CodeDivEle.addEventListener('keyup', (event) => {
             if ((event.key === 'Backspace' || event.key === 'Delete')) {
                 let attribute = CodeDivEle.getAttribute('empty');
-                if (CodeDivEle.innerHTML == '' && attribute === 'true') {
+                if (attribute === 'true') {
                     blockRender.delBlock(blockRender.blockList, block.blockId);
+                    return;
                 }
-                if (CodeDivEle.innerHTML == '') {
+                if (CodeDivEle.innerText == '') {
                     CodeDivEle.setAttribute('empty', 'true');
+                    return;
                 }
-                if (CodeDivEle.innerHTML == '' && attribute === 'true') {
+                if (attribute === 'true' && CodeDivEle.innerText != '') {
                     CodeDivEle.setAttribute('empty', 'false');
+                    return;
                 }
             }
         });

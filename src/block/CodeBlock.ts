@@ -26,16 +26,21 @@ export class CodeBlock implements BlockView {
       if ((event.key === 'Backspace' || event.key === 'Delete') ) {
 
         let attribute = CodeDivEle.getAttribute('empty');
-        if (CodeDivEle.innerHTML == '' && attribute === 'true'){
+        if (attribute === 'true'){
           blockRender.delBlock(blockRender.blockList,block.blockId)
-        }
-        if (CodeDivEle.innerHTML == ''){
-          CodeDivEle.setAttribute('empty','true')
+          return
         }
 
-        if (CodeDivEle.innerHTML == '' && attribute === 'true'){
-          CodeDivEle.setAttribute('empty','false')
+        if (CodeDivEle.innerText == ''){
+          CodeDivEle.setAttribute('empty','true')
+          return;
         }
+
+        if (attribute === 'true' && CodeDivEle.innerText != ''){
+          CodeDivEle.setAttribute('empty','false')
+          return;
+        }
+
       }
     });
   }

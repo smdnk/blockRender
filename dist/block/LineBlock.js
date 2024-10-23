@@ -39,14 +39,17 @@ export class LineBlock {
         LineDivEle.addEventListener('keyup', (event) => {
             if ((event.key === 'Backspace' || event.key === 'Delete')) {
                 let attribute = LineDivEle.getAttribute('empty');
-                if (LineDivEle.innerHTML == '' && attribute === 'true') {
+                if (attribute === 'true') {
                     blockRender.delBlock(blockRender.blockList, block.blockId);
+                    return;
                 }
-                if (LineDivEle.innerHTML == '') {
+                if (LineDivEle.innerText == '') {
                     LineDivEle.setAttribute('empty', 'true');
+                    return;
                 }
-                if (LineDivEle.innerHTML == '' && attribute === 'true') {
+                if (attribute === 'true' && LineDivEle.innerText != '') {
                     LineDivEle.setAttribute('empty', 'false');
+                    return;
                 }
             }
         });
