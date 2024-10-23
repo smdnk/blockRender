@@ -23,13 +23,13 @@ export class BlockRender{
     menu?:HTMLDivElement
     maxSort?:number
 
-    constructor(eleId:string,userId:string,currentBlockId: string,blockOption:Array<BlockOption>) {
+    constructor(eleId:string,userId:string,currentBlockId: string,blockList:Array<Block>,blockOption:Array<BlockOption>) {
         this.eleId = eleId
         this.userId = userId
-        this.blockList = []
         this.blockOption = blockOption
         this.currentBlockId = currentBlockId
-
+        this.blockList = blockList
+        this.init()
     }
 
     public render(blockList:Array<Block>){

@@ -16,12 +16,13 @@ export class BlockRender {
     positionY;
     menu;
     maxSort;
-    constructor(eleId, userId, currentBlockId, blockOption) {
+    constructor(eleId, userId, currentBlockId, blockList, blockOption) {
         this.eleId = eleId;
         this.userId = userId;
-        this.blockList = [];
         this.blockOption = blockOption;
         this.currentBlockId = currentBlockId;
+        this.blockList = blockList;
+        this.init();
     }
     render(blockList) {
         this.blockList = blockList;
