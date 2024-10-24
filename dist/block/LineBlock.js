@@ -1,5 +1,5 @@
 import { BlockType } from "../types";
-import { updateContent } from "../utils";
+import { divIsEmpty, updateContent } from "../utils";
 export class LineBlock {
     writeBytesToFile;
     constructor(writeBytesToFile) {
@@ -43,28 +43,13 @@ export class LineBlock {
                     blockRender.delBlock(blockRender.blockList, block.blockId);
                     return;
                 }
-                if (LineDivEle.innerText == '') {
+                if (divIsEmpty(LineDivEle)) {
                     LineDivEle.setAttribute('empty', 'true');
                     return;
                 }
-                if (attribute === 'true' && LineDivEle.innerText != '') {
+                if (attribute === 'true' && !divIsEmpty(LineDivEle)) {
                     LineDivEle.setAttribute('empty', 'false');
                     return;
-                }
-            }
-        });
-        // 监听删除键
-        LineDivEle.addEventListener('keyup', (event) => {
-            if ((event.key === 'Backspace' || event.key === 'Delete')) {
-                let attribute = LineDivEle.getAttribute('empty');
-                if (LineDivEle.innerHTML == '' && attribute === 'true') {
-                    LineDivEle.remove();
-                }
-                if (LineDivEle.innerHTML == '') {
-                    LineDivEle.setAttribute('empty', 'true');
-                }
-                if (LineDivEle.innerHTML == '' && attribute === 'true') {
-                    LineDivEle.setAttribute('empty', 'false');
                 }
             }
         });

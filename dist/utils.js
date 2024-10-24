@@ -48,3 +48,6 @@ const optimizeHTML2 = (parent) => {
         }
     }
 };
+export const divIsEmpty = (ele) => {
+    return ele.innerHTML === '' || ele.innerHTML === '<br>' || ele.innerText === '' || ele.innerText === '\n';
+};

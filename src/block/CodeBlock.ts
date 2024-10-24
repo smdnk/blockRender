@@ -1,6 +1,6 @@
 import {BlockRender, BlockView} from "../index";
 import {Block} from "../types";
-import {updateContent} from "../utils";
+import {divIsEmpty, updateContent} from "../utils";
 
 export class CodeBlock implements BlockView {
   renderView(block: Block,htmlDivElement:HTMLDivElement,blockRender:BlockRender) {
@@ -31,12 +31,12 @@ export class CodeBlock implements BlockView {
           return
         }
 
-        if (CodeDivEle.innerText == ''){
+        if (divIsEmpty(CodeDivEle)){
           CodeDivEle.setAttribute('empty','true')
           return;
         }
 
-        if (attribute === 'true' && CodeDivEle.innerText != ''){
+        if (attribute === 'true' && !divIsEmpty(CodeDivEle)){
           CodeDivEle.setAttribute('empty','false')
           return;
         }

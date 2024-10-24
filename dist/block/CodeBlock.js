@@ -1,4 +1,4 @@
-import { updateContent } from "../utils";
+import { divIsEmpty, updateContent } from "../utils";
 export class CodeBlock {
     renderView(block, htmlDivElement, blockRender) {
         htmlDivElement.innerHTML = block.blockData.content;
@@ -21,11 +21,11 @@ export class CodeBlock {
                     blockRender.delBlock(blockRender.blockList, block.blockId);
                     return;
                 }
-                if (CodeDivEle.innerText == '') {
+                if (divIsEmpty(CodeDivEle)) {
                     CodeDivEle.setAttribute('empty', 'true');
                     return;
                 }
-                if (attribute === 'true' && CodeDivEle.innerText != '') {
+                if (attribute === 'true' && !divIsEmpty(CodeDivEle)) {
                     CodeDivEle.setAttribute('empty', 'false');
                     return;
                 }

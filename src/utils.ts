@@ -53,3 +53,6 @@ const optimizeHTML2 = (parent:HTMLElement) => {
     }
 }
 
+export const divIsEmpty = (ele:HTMLDivElement):boolean=>{
+    return  ele.innerHTML === '' || ele.innerHTML === '<br>' || ele.innerText === '' || ele.innerText === '\n'
+}
