@@ -15,6 +15,7 @@ export class BlockRender {
     positionX;
     positionY;
     menu;
+    selectBox;
     maxSort;
     constructor(eleId, userId, currentBlockId, blockList, blockOption) {
         this.eleId = eleId;
@@ -57,27 +58,25 @@ export class BlockRender {
         return htmlDivElement;
     }
     init() {
-        this.initEle();
-        this.initMenu();
-    }
-    initEle() {
         const noteEle = document.querySelector(this.eleId);
         if (noteEle === null)
             return;
-        // 先清理元素，这种清理方法不会触发元素上绑定的事件
-        noteEle.innerHTML = '';
+        this.initEle(noteEle);
+        this.initMenu(noteEle);
+        this.initSelectBox(noteEle);
         // 添加笔记页面事件
         this.addNoteEvent(noteEle);
+    }
+    initEle(noteEle) {
+        // 先清理元素，这种清理方法不会触发元素上绑定的事件
+        noteEle.innerHTML = '';
         // 根据数据初始化块列表
         for (let block of this.blockList) {
             noteEle.appendChild(this.blockEleRender(block));
         }
     }
-    initMenu() {
-        const noteEle = document.querySelector(this.eleId);
+    initMenu(noteEle) {
         const menu = document.createElement('div');
-        if (noteEle === null || noteEle === undefined)
-            return;
         menu.classList.add('menu');
         // 使 div 能够获得焦点
         menu.setAttribute('tabindex', '0');
@@ -97,6 +96,11 @@ export class BlockRender {
         this.menu = menu;
         noteEle.appendChild(menu);
     }
+    initSelectBox(noteEle) {
+        this.selectBox = document.createElement('div');
+        this.selectBox.classList.add('selection-box');
+        noteEle.appendChild(this.selectBox);
+    }
     //  点击新建块菜单，根据选择的内容新建块
     clickMenu(blockType) {
         const block = this.createBlock();
@@ -104,10 +108,42 @@ export class BlockRender {
         this.changeBlock(this.blockList, this.currentBlockId, block);
     }
     addNoteEvent(NoteEle) {
-        // 记录鼠标当前位置
+        let isDragging = false;
+        let startX, startY;
         NoteEle.addEventListener('mouseup', (e) => {
+            // 记录鼠标当前位置
             this.positionX = e.pageX;
             this.positionY = e.pageY;
+            isDragging = false;
+            if (this.selectBox === undefined)
+                return;
+            this.selectBox.style.display = 'none'; // 隐藏矩形框
+        });
+        NoteEle.addEventListener("mousedown", (event) => {
+            isDragging = true;
+            startX = event.clientX;
+            startY = event.clientY;
+            if (this.selectBox === undefined)
+                return;
+            this.selectBox.style.left = `${startX}px`;
+            this.selectBox.style.top = `${startY}px`;
+            this.selectBox.style.width = '0';
+            this.selectBox.style.height = '0';
+            this.selectBox.style.display = 'block'; // 显示矩形框
+        });
+        NoteEle.addEventListener('mousemove', (event) => {
+            if (isDragging) {
+                const currentX = event.clientX;
+                const currentY = event.clientY;
+                const width = currentX - startX;
+                const height = currentY - startY;
+                if (this.selectBox === undefined)
+                    return;
+                this.selectBox.style.width = `${Math.abs(width)}px`;
+                this.selectBox.style.height = `${Math.abs(height)}px`;
+                this.selectBox.style.left = `${Math.min(startX, currentX)}px`;
+                this.selectBox.style.top = `${Math.min(startY, currentY)}px`;
+            }
         });
     }
     getBlockTypeList() {

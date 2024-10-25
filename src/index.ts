@@ -22,6 +22,7 @@ export class BlockRender{
     positionX?:number
     positionY?:number
     menu?:HTMLDivElement
+    selectBox?:HTMLDivElement
     maxSort?:number
 
     constructor(eleId:string,userId:string,currentBlockId: string,blockList:Array<Block>,blockOption:Array<BlockOption>) {
@@ -70,21 +71,21 @@ export class BlockRender{
     }
 
     public init() {
-
-        this.initEle()
-        this.initMenu()
+        const noteEle:HTMLDivElement | null= document.querySelector(this.eleId);
+        if ( noteEle === null) return
+        this.initEle(noteEle)
+        this.initMenu(noteEle)
+        this.initSelectBox(noteEle)
+        // 添加笔记页面事件
+        this.addNoteEvent(noteEle)
     }
 
 
-    private initEle(){
+    private initEle(noteEle:HTMLDivElement){
 
-        const noteEle:HTMLDivElement | null= document.querySelector(this.eleId);
-        if ( noteEle === null) return
+
         // 先清理元素，这种清理方法不会触发元素上绑定的事件
         noteEle.innerHTML = ''
-        // 添加笔记页面事件
-        this.addNoteEvent(noteEle)
-
         // 根据数据初始化块列表
         for (let block of this.blockList) {
             noteEle.appendChild(this.blockEleRender(block))
@@ -92,10 +93,8 @@ export class BlockRender{
 
     }
 
-    private initMenu() {
-        const noteEle = document.querySelector(this.eleId);
+    private initMenu(noteEle:HTMLDivElement ) {
         const menu = document.createElement('div');
-        if (noteEle === null || noteEle === undefined) return
         menu.classList.add('menu');
         // 使 div 能够获得焦点
         menu.setAttribute('tabindex', '0');
@@ -119,6 +118,12 @@ export class BlockRender{
 
     }
 
+    private initSelectBox(noteEle:HTMLDivElement ){
+        this.selectBox = document.createElement('div')
+        this.selectBox.classList.add('selection-box')
+        noteEle.appendChild(this.selectBox);
+    }
+
     //  点击新建块菜单，根据选择的内容新建块
     private clickMenu (blockType:BlockType){
         const block = this.createBlock();
@@ -127,10 +132,44 @@ export class BlockRender{
     }
 
     private addNoteEvent(NoteEle:HTMLDivElement){
-        // 记录鼠标当前位置
+        let isDragging = false;
+        let startX:number, startY:number;
+
+
         NoteEle.addEventListener('mouseup',(e)=>{
+            // 记录鼠标当前位置
             this.positionX = e.pageX
             this.positionY = e.pageY
+
+            isDragging = false;
+            if (this.selectBox === undefined) return
+            this.selectBox.style.display = 'none'; // 隐藏矩形框
+        })
+
+        NoteEle.addEventListener("mousedown", (event) => {
+            isDragging = true;
+            startX = event.clientX;
+            startY = event.clientY;
+            if (this.selectBox === undefined) return
+            this.selectBox.style.left = `${startX}px`;
+            this.selectBox.style.top = `${startY}px`;
+            this.selectBox.style.width = '0';
+            this.selectBox.style.height = '0';
+            this.selectBox.style.display = 'block'; // 显示矩形框
+        });
+        NoteEle.addEventListener('mousemove',(event) => {
+            if (isDragging) {
+                const currentX = event.clientX;
+                const currentY = event.clientY;
+
+                const width = currentX - startX;
+                const height = currentY - startY;
+                if (this.selectBox === undefined) return
+                this.selectBox.style.width = `${Math.abs(width)}px`;
+                this.selectBox.style.height = `${Math.abs(height)}px`;
+                this.selectBox.style.left = `${Math.min(startX, currentX)}px`;
+                this.selectBox.style.top = `${Math.min(startY, currentY)}px`;
+            }
         })
 
     }
