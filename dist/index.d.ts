@@ -19,7 +19,8 @@ export declare class BlockRender {
     positionX?: number;
     positionY?: number;
     menu?: HTMLDivElement;
-    selectBox?: HTMLDivElement;
+    isDragging?: boolean;
+    selectEdBlockElement?: Array<HTMLDivElement>;
     maxSort?: number;
     constructor(eleId: string, userId: string, currentBlockId: string, blockList: Array<Block>, blockOption: Array<BlockOption>);
     render(blockList: Array<Block>): void;
@@ -27,8 +28,8 @@ export declare class BlockRender {
     init(): void;
     private initEle;
     private initMenu;
-    private initSelectBox;
     private clickMenu;
+    private addBlockEvent;
     private addNoteEvent;
     private getBlockTypeList;
     private getBlockOption;

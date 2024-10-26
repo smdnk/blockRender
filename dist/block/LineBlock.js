@@ -35,6 +35,15 @@ export class LineBlock {
             }
             updateContent(LineDivEle.innerHTML, block);
         });
+        LineDivEle.addEventListener('keydown', (event => {
+            // 行块换行时，新增一个行块
+            if (event.key === 'Enter') {
+                event.preventDefault(); // 阻止默认行为（如换行）
+                const block = blockRender.createBlock();
+                blockRender.insertBlock(blockRender.blockList, blockRender.currentBlockId, block);
+                return;
+            }
+        }));
         // 监听删除键
         LineDivEle.addEventListener('keyup', (event) => {
             if ((event.key === 'Backspace' || event.key === 'Delete')) {
