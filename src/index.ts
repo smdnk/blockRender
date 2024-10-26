@@ -263,6 +263,7 @@ export class BlockRender{
                 if (currentBlockEle) {
                     currentBlockEle.insertAdjacentElement('afterend', newBlockEle);
                 }
+                newBlockEle.focus()
                 return;
             }
 
