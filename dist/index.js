@@ -132,8 +132,17 @@ export class BlockRender {
             if (this.selectEdBlockElement == undefined)
                 return;
             for (let htmlDivElement of this.selectEdBlockElement) {
-                debugger;
                 htmlDivElement.style.backgroundColor = '';
+            }
+            this.selectEdBlockElement = [];
+        });
+        NoteEle.addEventListener('keyup', (e) => {
+            if ((e.key === 'Backspace' || e.key === 'Delete')) {
+                if (this.selectEdBlockElement == undefined)
+                    return;
+                for (let htmlDivElement of this.selectEdBlockElement) {
+                    htmlDivElement.remove();
+                }
             }
         });
     }
