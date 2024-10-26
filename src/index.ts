@@ -22,7 +22,8 @@ export class BlockRender{
     positionX?:number
     positionY?:number
     menu?:HTMLDivElement
-    selectBox?:HTMLDivElement
+    isDragging?:boolean // 是否拖动
+    selectEdBlockElement?:Array<HTMLDivElement>
     maxSort?:number
 
     constructor(eleId:string,userId:string,currentBlockId: string,blockList:Array<Block>,blockOption:Array<BlockOption>) {
@@ -53,20 +54,9 @@ export class BlockRender{
         // 在根元素上使用渲染器渲染块
         blockView.renderView(block,htmlDivElement,this);
 
-        // 添加一些块上的默认事件
-        if (block.blockType !== BlockType.LIST) {
-            htmlDivElement.addEventListener('focus',(event)=>{
-                this.currentBlockId = block.blockId
-            })
-            htmlDivElement.addEventListener('keydown',(event)=>{
-                if (event.key === 'Enter' && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey)) {
-                    event.preventDefault(); // 阻止默认的换行行为
-                    const block = this.createBlock();
-                    this.insertBlock(this.blockList,this.currentBlockId,block)
-                    return
-                }
-            })
-        }
+        this.addBlockEvent(block,htmlDivElement)
+
+
         return htmlDivElement
     }
 
@@ -75,7 +65,6 @@ export class BlockRender{
         if ( noteEle === null) return
         this.initEle(noteEle)
         this.initMenu(noteEle)
-        this.initSelectBox(noteEle)
         // 添加笔记页面事件
         this.addNoteEvent(noteEle)
     }
@@ -118,11 +107,6 @@ export class BlockRender{
 
     }
 
-    private initSelectBox(noteEle:HTMLDivElement ){
-        this.selectBox = document.createElement('div')
-        this.selectBox.classList.add('selection-box')
-        noteEle.appendChild(this.selectBox);
-    }
 
     //  点击新建块菜单，根据选择的内容新建块
     private clickMenu (blockType:BlockType){
@@ -131,46 +115,56 @@ export class BlockRender{
         this.changeBlock(this.blockList,this.currentBlockId,block)
     }
 
-    private addNoteEvent(NoteEle:HTMLDivElement){
-        let isDragging = false;
-        let startX:number, startY:number;
+    private addBlockEvent(block:Block,htmlDivElement:HTMLDivElement){
+        // 鼠标拖动选择
+        htmlDivElement.addEventListener('mousemove', (event) => {
+            if (!this.isDragging) return
+            htmlDivElement.style.backgroundColor = '#F8E6E6';
+            if (this.selectEdBlockElement == undefined) this.selectEdBlockElement = []
+            this.selectEdBlockElement.push(htmlDivElement)
+        });
 
+        // 添加一些块上的默认事件
+        if (block.blockType !== BlockType.LIST) {
+            htmlDivElement.addEventListener('focus',(event)=>{
+                this.currentBlockId = block.blockId
+            })
+            htmlDivElement.addEventListener('keydown',(event)=>{
+                if (event.key === 'Enter' && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey)) {
+                    event.preventDefault(); // 阻止默认的换行行为
+                    const block = this.createBlock();
+                    this.insertBlock(this.blockList,this.currentBlockId,block)
+                    return
+                }
+            })
+
+        }
+    }
+    private addNoteEvent(NoteEle:HTMLDivElement){
 
         NoteEle.addEventListener('mouseup',(e)=>{
             // 记录鼠标当前位置
             this.positionX = e.pageX
             this.positionY = e.pageY
 
-            isDragging = false;
-            if (this.selectBox === undefined) return
-            this.selectBox.style.display = 'none'; // 隐藏矩形框
+            if (this.isDragging){
+                // 如果是拖动后抬起，需要弹出操作菜单
+            }
+            // 鼠标抬起关闭拖动标记
+            this.isDragging = false;
         })
-
-        NoteEle.addEventListener("mousedown", (event) => {
-            isDragging = true;
-            startX = event.clientX;
-            startY = event.clientY;
-            if (this.selectBox === undefined) return
-            this.selectBox.style.left = `${startX}px`;
-            this.selectBox.style.top = `${startY}px`;
-            this.selectBox.style.width = '0';
-            this.selectBox.style.height = '0';
-            this.selectBox.style.display = 'block'; // 显示矩形框
-        });
-        NoteEle.addEventListener('mousemove',(event) => {
-            if (isDragging) {
-                const currentX = event.clientX;
-                const currentY = event.clientY;
-
-                const width = currentX - startX;
-                const height = currentY - startY;
-                if (this.selectBox === undefined) return
-                this.selectBox.style.width = `${Math.abs(width)}px`;
-                this.selectBox.style.height = `${Math.abs(height)}px`;
-                this.selectBox.style.left = `${Math.min(startX, currentX)}px`;
-                this.selectBox.style.top = `${Math.min(startY, currentY)}px`;
+        // 鼠标按下拖动标记打开
+        NoteEle.addEventListener('mousedown',(e)=>{
+            this.isDragging = true;
+            // 同时清理上一次的选择
+            if ( this.selectEdBlockElement == undefined ) return
+            for (let htmlDivElement of this.selectEdBlockElement) {
+                debugger
+                htmlDivElement.style.backgroundColor = '';
             }
         })
+
+
 
     }
 
