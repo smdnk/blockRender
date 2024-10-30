@@ -1,3 +1,5 @@
+@use 'menu';
+
 .block-main{
   margin: 1px 0 0 12px;
   padding: 2px 0;
@@ -35,18 +37,6 @@
 .my-click{
   cursor: pointer;
   user-select:none;
-}
-.menu{
-  max-height: 30%;
-  min-height: 30px;
-  width: 80px;
-  position: absolute;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 10px;
-  z-index: 1000;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .selection-box {

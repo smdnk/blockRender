@@ -29,7 +29,7 @@ export class LineBlock implements BlockView {
         if (blockRender.menu) {
           blockRender.menu.hidden = LineDivEle.innerHTML !== '/'
           // 如果要显示菜单，则自动获取焦点 同时调整位置
-          if ( blockRender.menu.hidden)  {
+          if (!blockRender.menu.hidden)  {
             blockRender.menu.focus()
 
             if (blockRender.positionY == undefined) blockRender.positionY = 0
@@ -60,6 +60,7 @@ export class LineBlock implements BlockView {
     LineDivEle.addEventListener('keyup',(event)=>{
 
       if ((event.key === 'Backspace' || event.key === 'Delete') ) {
+        if (blockRender.menu) blockRender.menu.hidden = LineDivEle.innerHTML !== '/'
 
         let attribute = getEleEmptyAttr(LineDivEle)
         if (attribute){

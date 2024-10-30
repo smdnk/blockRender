@@ -1,5 +1,5 @@
 import { BlockType } from "../types";
-import { divIsEmpty, updateContent } from "../utils";
+import { changeEleEmptyAttr, divIsEmpty, getEleEmptyAttr, setEleEmptyAttr, updateContent } from "../utils";
 export class LineBlock {
     writeBytesToFile;
     constructor(writeBytesToFile) {
@@ -16,12 +16,13 @@ export class LineBlock {
     addBlockEvent(block, LineDivEle, blockRender) {
         // 监听 input 事件
         LineDivEle.addEventListener('input', (event) => {
+            changeEleEmptyAttr(LineDivEle);
             if (LineDivEle.innerHTML === '/' || LineDivEle.innerHTML === '') {
                 block.blockData.content = LineDivEle.innerHTML;
                 if (blockRender.menu) {
                     blockRender.menu.hidden = LineDivEle.innerHTML !== '/';
                     // 如果要显示菜单，则自动获取焦点 同时调整位置
-                    if (blockRender.menu.hidden) {
+                    if (!blockRender.menu.hidden) {
                         blockRender.menu.focus();
                         if (blockRender.positionY == undefined)
                             blockRender.positionY = 0;
@@ -36,6 +37,9 @@ export class LineBlock {
             updateContent(LineDivEle.innerHTML, block);
         });
         LineDivEle.addEventListener('keydown', (event => {
+            // 如果不是简单的换行，终止新增块
+            if (event.key === 'Enter' && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey))
+                return;
             // 行块换行时，新增一个行块
             if (event.key === 'Enter') {
                 event.preventDefault(); // 阻止默认行为（如换行）
@@ -47,17 +51,19 @@ export class LineBlock {
         // 监听删除键
         LineDivEle.addEventListener('keyup', (event) => {
             if ((event.key === 'Backspace' || event.key === 'Delete')) {
-                let attribute = LineDivEle.getAttribute('empty');
-                if (attribute === 'true') {
+                if (blockRender.menu)
+                    blockRender.menu.hidden = LineDivEle.innerHTML !== '/';
+                let attribute = getEleEmptyAttr(LineDivEle);
+                if (attribute) {
                     blockRender.delBlock(blockRender.blockList, block.blockId);
                     return;
                 }
                 if (divIsEmpty(LineDivEle)) {
-                    LineDivEle.setAttribute('empty', 'true');
+                    setEleEmptyAttr(LineDivEle);
                     return;
                 }
-                if (attribute === 'true' && !divIsEmpty(LineDivEle)) {
-                    LineDivEle.setAttribute('empty', 'false');
+                if (attribute && !divIsEmpty(LineDivEle)) {
+                    setEleEmptyAttr(LineDivEle);
                     return;
                 }
             }

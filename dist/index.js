@@ -1,5 +1,6 @@
 import { BlockType, LanguageType } from "./types";
-import './index.css'; // 自动导入样式
+import './index.css';
+import { getRandomInt, setEleEmptyAttr } from "./utils"; // 自动导入样式
 export { LineBlock } from './block/LineBlock';
 export { ListBlock } from './block/ListBlock';
 export { CodeBlock } from './block/CodeBlock';
@@ -43,6 +44,8 @@ export class BlockRender {
         // 在根元素上使用渲染器渲染块
         blockView.renderView(block, htmlDivElement, this);
         this.addBlockEvent(block, htmlDivElement);
+        // 初始化块元素是否为空
+        setEleEmptyAttr(htmlDivElement);
         return htmlDivElement;
     }
     init() {
@@ -63,6 +66,14 @@ export class BlockRender {
         }
     }
     initMenu(noteEle) {
+        // 菜单数据
+        const menuData = [
+            { text: '用 AI 写作', shortcut: '/yaixz' },
+            { text: '绘写', shortcut: '/xx' },
+            { text: '总结', shortcut: '/zj' },
+            { text: '更多' },
+        ];
+        // 创建菜单容器
         const menu = document.createElement('div');
         menu.classList.add('menu');
         // 使 div 能够获得焦点
@@ -72,14 +83,45 @@ export class BlockRender {
             // 点击菜单外的其他地方，隐藏菜单
             menu.hidden = true;
         });
-        for (let blockType of this.getBlockTypeList()) {
+        // 添加菜单项
+        menuData.forEach(item => {
             const menuItem = document.createElement('div');
-            menuItem.innerHTML = blockType;
+            menuItem.className = 'menu-item';
+            menuItem.textContent = item.text;
             menuItem.addEventListener('click', (event) => {
-                this.clickMenu(blockType);
+                alert('暂不支持');
+                menu.hidden = true;
             });
+            // 添加快捷键
+            if (item.shortcut) {
+                const shortcut = document.createElement('span');
+                shortcut.className = 'shortcut';
+                shortcut.textContent = item.shortcut;
+                menuItem.appendChild(shortcut);
+            }
             menu.appendChild(menuItem);
-        }
+        });
+        // 添加分隔线和子菜单
+        const submenu = document.createElement('div');
+        submenu.className = 'submenu';
+        this.blockOption.forEach(item => {
+            const submenuItem = document.createElement('div');
+            submenuItem.className = 'menu-item';
+            submenuItem.textContent = item.blockName;
+            submenuItem.addEventListener('click', (event) => {
+                this.clickMenu(item.blockName);
+                menu.hidden = true;
+            });
+            // 添加快捷键
+            if (item.shortcut) {
+                const shortcut = document.createElement('span');
+                shortcut.className = 'shortcut';
+                shortcut.textContent = item.shortcut;
+                submenuItem.appendChild(shortcut);
+            }
+            submenu.appendChild(submenuItem);
+        });
+        menu.appendChild(submenu);
         this.menu = menu;
         noteEle.appendChild(menu);
     }
@@ -165,7 +207,7 @@ export class BlockRender {
         return {
             parentBlockId: "",
             sort: this.maxSort, // 展示顺序
-            blockId: this.userId + '' + new Date().getTime(),
+            blockId: this.userId + '' + new Date().getTime() + getRandomInt(0, 10),
             position: '', // 块的位置开始于第几行
             blockData: {
                 content: "",

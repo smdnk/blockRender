@@ -1,0 +1,39 @@
+/* 样式部分 */
+.menu {
+  width: 200px;
+  position: absolute;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background-color: #f0f0f0;
+}
+
+.shortcut {
+  color: #999;
+}
+
+.submenu {
+  margin-top: 10px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+.submenu .menu-item {
+  padding: 5px 8px;
+  font-size: 13px;
+}

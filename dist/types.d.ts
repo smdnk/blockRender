@@ -56,4 +56,5 @@ export type Block = {
 export type BlockOption = {
     blockName: BlockType;
     blockView: BlockView;
+    shortcut?: string;
 };

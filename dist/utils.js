@@ -1,4 +1,16 @@
-export const updateContent = (innerHtml, block) => {
+// 防抖函数，只有最后一次在设置时间结束后执行
+export const debounce = (fn, delay) => {
+    let timer = null;
+    return function (...args) {
+        if (timer !== null) {
+            clearTimeout(timer);
+        }
+        timer = window.setTimeout(() => {
+            fn(...args);
+        }, delay);
+    };
+};
+export const updateContent = debounce((innerHtml, block) => {
     let tempDiv = document.createElement('div');
     tempDiv.innerHTML = innerHtml;
     optimizeHTML(tempDiv);
@@ -11,7 +23,7 @@ export const updateContent = (innerHtml, block) => {
     // });
     // let formattedStr = innerText.replace(/\\n/g, "\\\\n").replace(/\n/g, "<br>");
     block.blockData.content = tempDiv.innerHTML;
-};
+}, 3000);
 const optimizeHTML = (parent) => {
     const children = Array.from(parent.childNodes); // 把 childNodes 转换为数组
     for (let child of children) {
@@ -50,4 +62,21 @@ const optimizeHTML2 = (parent) => {
 };
 export const divIsEmpty = (ele) => {
     return ele.innerHTML === '' || ele.innerHTML === '<br>' || ele.innerText === '' || ele.innerText === '\n';
+};
+export const getRandomInt = (min, max) => {
+    min = Math.ceil(min); // 确保最小值是整数
+    max = Math.floor(max); // 确保最大值是整数
+    return Math.floor(Math.random() * (max - min + 1)) + min; // 包含最大值
+};
+export const setEleEmptyAttr = (ele) => {
+    ele.setAttribute('empty', divIsEmpty(ele) ? 'true' : 'false');
+};
+export const getEleEmptyAttr = (ele) => {
+    return ele.getAttribute('empty') === 'true';
+};
+// 输入时检查，不为空时修改属性
+export const changeEleEmptyAttr = (ele) => {
+    if (getEleEmptyAttr(ele)) {
+        setEleEmptyAttr(ele);
+    }
 };
