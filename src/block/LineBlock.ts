@@ -1,6 +1,6 @@
 import {BlockRender, BlockView} from "../index";
 import {Block,  BlockType} from "../types";
-import {divIsEmpty, updateContent} from "../utils";
+import {changeEleEmptyAttr, divIsEmpty, getEleEmptyAttr, setEleEmptyAttr, updateContent} from "../utils";
 
 export class LineBlock implements BlockView {
   writeBytesToFile: (arrData: number[], fileName:string) => void;
@@ -23,6 +23,7 @@ export class LineBlock implements BlockView {
   addBlockEvent(block: Block,LineDivEle:HTMLDivElement,blockRender:BlockRender){
     // 监听 input 事件
     LineDivEle.addEventListener('input', (event: Event) => {
+      changeEleEmptyAttr(LineDivEle)
       if (LineDivEle.innerHTML === '/' || LineDivEle.innerHTML === '') {
         block.blockData.content = LineDivEle.innerHTML
         if (blockRender.menu) {
@@ -44,6 +45,8 @@ export class LineBlock implements BlockView {
     });
 
     LineDivEle.addEventListener('keydown',(event=>{
+      // 如果不是简单的换行，终止新增块
+      if (event.key === 'Enter' && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey)) return;
       // 行块换行时，新增一个行块
       if (event.key === 'Enter') {
         event.preventDefault(); // 阻止默认行为（如换行）
@@ -58,19 +61,19 @@ export class LineBlock implements BlockView {
 
       if ((event.key === 'Backspace' || event.key === 'Delete') ) {
 
-        let attribute = LineDivEle.getAttribute('empty');
-        if (attribute === 'true'){
+        let attribute = getEleEmptyAttr(LineDivEle)
+        if (attribute){
           blockRender.delBlock(blockRender.blockList,block.blockId)
           return
         }
 
         if (divIsEmpty(LineDivEle)){
-          LineDivEle.setAttribute('empty','true')
+          setEleEmptyAttr(LineDivEle)
           return;
         }
 
-        if (attribute === 'true' && !divIsEmpty(LineDivEle)){
-          LineDivEle.setAttribute('empty','false')
+        if (attribute && !divIsEmpty(LineDivEle)){
+          setEleEmptyAttr(LineDivEle)
           return;
         }
       }

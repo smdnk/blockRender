@@ -1,6 +1,6 @@
 import {BlockRender, BlockView} from "../index";
 import {Block} from "../types";
-import {divIsEmpty, updateContent} from "../utils";
+import {changeEleEmptyAttr, divIsEmpty, getEleEmptyAttr, setEleEmptyAttr, updateContent} from "../utils";
 
 export class CodeBlock implements BlockView {
   renderView(block: Block,htmlDivElement:HTMLDivElement,blockRender:BlockRender) {
@@ -17,6 +17,7 @@ export class CodeBlock implements BlockView {
 
     // 监听 input 事件
     CodeDivEle.addEventListener('input', (event: Event) => {
+      changeEleEmptyAttr(CodeDivEle)
       updateContent(CodeDivEle.innerHTML,block)
     });
 
@@ -25,19 +26,20 @@ export class CodeBlock implements BlockView {
 
       if ((event.key === 'Backspace' || event.key === 'Delete') ) {
 
-        let attribute = CodeDivEle.getAttribute('empty');
-        if (attribute === 'true'){
+        let attribute = getEleEmptyAttr(CodeDivEle);
+
+        if (attribute){
           blockRender.delBlock(blockRender.blockList,block.blockId)
           return
         }
 
         if (divIsEmpty(CodeDivEle)){
-          CodeDivEle.setAttribute('empty','true')
+          setEleEmptyAttr(CodeDivEle)
           return;
         }
 
-        if (attribute === 'true' && !divIsEmpty(CodeDivEle)){
-          CodeDivEle.setAttribute('empty','false')
+        if (attribute && !divIsEmpty(CodeDivEle)){
+          setEleEmptyAttr(CodeDivEle)
           return;
         }
 

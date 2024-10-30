@@ -1,5 +1,6 @@
 import {Block, BlockData, BlockOption, BlockType, LanguageType} from "./types";
-import './index.css';  // 自动导入样式
+import './index.css';
+import { getRandomInt, setEleEmptyAttr} from "./utils";  // 自动导入样式
 export { LineBlock } from './block/LineBlock';
 export { ListBlock } from './block/ListBlock';
 export { CodeBlock } from './block/CodeBlock';
@@ -55,7 +56,8 @@ export class BlockRender{
         blockView.renderView(block,htmlDivElement,this);
 
         this.addBlockEvent(block,htmlDivElement)
-
+        // 初始化块元素是否为空
+        setEleEmptyAttr(htmlDivElement)
 
         return htmlDivElement
     }
@@ -196,7 +198,7 @@ export class BlockRender{
         return {
             parentBlockId: "",
             sort: this.maxSort, // 展示顺序
-            blockId: this.userId + '' + new Date().getTime(),
+            blockId: this.userId + '' + new Date().getTime() + getRandomInt(0,10),
             position: '', // 块的位置开始于第几行
             blockData: {
                 content: "",
