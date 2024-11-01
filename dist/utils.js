@@ -23,7 +23,7 @@ export const updateContent = debounce((innerHtml, block) => {
     // });
     // let formattedStr = innerText.replace(/\\n/g, "\\\\n").replace(/\n/g, "<br>");
     block.blockData.content = tempDiv.innerHTML;
-}, 3000);
+}, 500);
 const optimizeHTML = (parent) => {
     const children = Array.from(parent.childNodes); // 把 childNodes 转换为数组
     for (let child of children) {

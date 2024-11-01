@@ -26,7 +26,7 @@ export const updateContent = debounce((innerHtml:string,block:Block) => {
     // });
     // let formattedStr = innerText.replace(/\\n/g, "\\\\n").replace(/\n/g, "<br>");
     block.blockData.content = tempDiv.innerHTML
-},3000)
+},500)
 
 const optimizeHTML = (parent:HTMLDivElement) => {
     const children = Array.from(parent.childNodes) as Array<any>; // 把 childNodes 转换为数组

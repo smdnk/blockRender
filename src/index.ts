@@ -73,10 +73,14 @@ export class BlockRender{
 
 
     private initEle(noteEle:HTMLDivElement){
-
-
         // 先清理元素，这种清理方法不会触发元素上绑定的事件
         noteEle.innerHTML = ''
+
+        if (this.blockList == undefined) throw new Error("No block list")
+        if (this.blockList.length == 0) {
+            this.blockList.push(this.createBlock())
+        }
+
         // 根据数据初始化块列表
         for (let block of this.blockList) {
             noteEle.appendChild(this.blockEleRender(block))
